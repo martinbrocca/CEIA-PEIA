@@ -1,0 +1,143 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{float}
+
+\title{Examen Final: Probabilidad y Estadística para la Inteligencia Artificial}
+\author{Martín Brocca \and Agustín López Fredes \and Fermín Rodríguez del Castillo}
+\date{Abril 2025}
+
+\begin{document}
+\maketitle
+
+\section{Planteamiento del problema}
+Don Francisco busca optimizar la gestión de sus supermercados \emph{Santa Ana} y \emph{La Floresta}, respondiendo a:
+\begin{enumerate}
+  \item \textbf{Vacaciones:} ¿Qué mes presenta las ventas más bajas?  
+  \item \textbf{Inversión:} ¿Qué mes presenta las ventas más altas?  
+  \item \textbf{Administración de personal:} ¿Cómo varían las ventas según el día de la semana?  
+  \item \textbf{Comparación de tiendas:} ¿Existe diferencia significativa entre las medias de ventas?  
+\end{enumerate}
+
+\section{Procesamiento de los datos}
+Se cargaron los registros diarios (fecha, tienda, monto de ventas) y se procesaron:
+\begin{itemize}
+  \item Agrupaciones por mes y por día de la semana.  
+  \item Cálculo de funciones empíricas de distribución (ECDF) y estimaciones KDE.  
+  \item Intervalos de confianza de la media (95\% y 99\%) mediante t-student.  
+  \item Pruebas de hipótesis: ANOVA y prueba t de una cola.  
+\end{itemize}
+
+\section{Resultados}
+\subsection{Ventas mensuales}
+Para identificar los meses con ventas extremas presentamos:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{graphs/meses_fde.png}
+  \caption{ECDF de ventas mensuales.}
+  \label{fig:ecdf_meses}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{graphs/meses_kde.png}
+  \caption{Estimación KDE de ventas mensuales.}
+  \label{fig:kde_meses}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{graphs/meses_histo.png}
+  \caption{Histograma de ventas mensuales.}
+  \label{fig:histo_meses}
+\end{figure}
+\begin{table}[H]
+  \centering
+  \small
+  \begin{tabular}{c rrrrr | rrrrr}
+    \toprule
+    Mes & \multicolumn{5}{c}{Santa Ana} & \multicolumn{5}{c}{La Floresta}\\
+         & Media & IC95- & IC95+ & IC99- & IC99+ & Media & IC95- & IC95+ & IC99- & IC99+\\
+    \midrule
+    \textbf{Ene} & 16.1 & 15.0 & 17.2 & 14.7 & 17.6 & 14.8 & 13.7 & 15.9 & 13.2 & 16.3\\
+    Feb & 18.6 & 17.5 & 19.8 & 17.2 & 20.1 & 13.9 & 12.8 & 14.9 & 12.5 & 15.3\\
+    Mar & 20.3 & 19.4 & 21.2 & 19.1 & 21.5 & 11.5 & 10.3 & 12.7 & 10.0 & 12.9\\
+    Abr & 18.8 & 17.8 & 19.7 & 17.5 & 20.1 & 18.9 & 17.8 & 19.9 & 17.6 & 20.2\\
+    May & 20.2 & 19.2 & 21.3 & 18.8 & 21.7 & 13.7 & 12.7 & 14.7 & 12.3 & 15.1\\
+    Jun & 21.2 & 20.2 & 22.3 & 19.9 & 22.6 & 15.8 & 14.7 & 16.8 & 14.3 & 17.2\\
+    Jul & 20.0 & 19.0 & 21.1 & 18.7 & 21.4 & 16.6 & 15.6 & 17.7 & 15.2 & 18.0\\
+    \textbf{Ago} & 21.4 & 20.5 & 22.3 & 20.1 & 22.6 & 14.8 & 13.7 & 15.9 & 13.2 & 16.3\\
+    Sep & 21.2 & 20.2 & 22.2 & 19.9 & 22.5 & 19.0 & 17.9 & 20.0 & 17.6 & 20.4\\
+    Oct & 21.1 & 20.1 & 22.1 & 19.7 & 22.4 & 15.5 & 14.5 & 16.5 & 14.1 & 16.9\\
+    Nov & 20.2 & 19.1 & 21.3 & 18.7 & 21.7 & 16.6 & 15.6 & 17.7 & 15.2 & 18.0\\
+    Dic & 19.1 & 18.2 & 20.0 & 17.8 & 20.4 & 14.2 & 13.1 & 15.2 & 12.6 & 15.7\\
+    \bottomrule
+  \end{tabular}
+  \caption{Intervalos de confianza al 95\% y 99\% de la media mensual por tienda (valores en miles); meses clave en negrita.}
+  \label{tab:ic_meses}
+\end{table}
+
+\subsection{Ventas por día de la semana}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{graphs/dias_fde.png}
+  \caption{ECDF de ventas diarias.}
+  \label{fig:ecdf_dias}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{graphs/dias_kde.png}
+  \caption{Estimación KDE de ventas diarias.}
+  \label{fig:kde_dias}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{graphs/dias_histo.png}
+  \caption{Histograma de ventas diarias.}
+  \label{fig:histo_dias}
+\end{figure}
+\begin{table}[H]
+  \centering
+  \small
+  \begin{tabular}{l rrrrr | rrrrr}
+    \toprule
+    Día & \multicolumn{5}{c}{Santa Ana} & \multicolumn{5}{c}{La Floresta}\\
+         & Media & IC95- & IC95+ & IC99- & IC99+ & Media & IC95- & IC95+ & IC99- & IC99+\\
+    \midrule
+    Lunes     & 19.2 & 18.5 & 20.0 & 18.3 & 20.2 & 17.3 & 16.6 & 18.0 & 16.4 & 18.2\\
+    Martes    & 20.7 & 20.0 & 21.3 & 19.8 & 21.5 & 18.2 & 17.5 & 18.9 & 17.2 & 19.2\\
+    \textbf{Miércoles} & 21.6 & 20.9 & 22.3 & 20.7 & 22.5 & 19.7 & 19.0 & 20.3 & 18.8 & 20.5\\
+    \textbf{Jueves}    & 21.9 & 21.2 & 22.6 & 21.0 & 22.8 & 19.6 & 19.1 & 20.2 & 18.9 & 20.4\\
+    Viernes   & 20.7 & 20.0 & 21.4 & 19.8 & 21.6 & 19.0 & 18.4 & 19.7 & 18.2 & 19.9\\
+    Sábado    & 18.5 & 17.8 & 19.2 & 17.6 & 19.4 & 16.5 & 15.7 & 17.3 & 15.4 & 17.5\\
+    \textbf{Domingo}   & 16.5 & 15.7 & 17.2 & 15.5 & 17.4 & 14.8 & 14.2 & 15.5 & 14.0 & 15.7\\
+    \bottomrule
+  \end{tabular}
+  \caption{Intervalos de confianza al 95\% y 99\% de la media diaria por tienda (valores en miles); días clave en negrita.}
+  \label{tab:ic_dias}
+\end{table}
+
+\subsection{Pruebas de hipótesis}
+\begin{itemize}
+  \item ANOVA: $F=80.29$, $p<0.001$ tanto al 95\% como al 99\%, mostrando que las medias de ventas diarias de Santa Ana y La Floresta difieren significativamente.
+  \item Prueba t de una cola: $t=-8.96$, con $p<0.01$ (95\%) y $p<0.001$ (99\%), confirmando que Santa Ana tiene un promedio diario superior al de La Floresta.
+\end{itemize}
+
+\section{Análisis y conclusiones}
+En base a los resultados y a los intervalos de confianza, podemos concluir lo siguiente:
+
+\begin{itemize}
+  \item En \textbf{enero} la venta promedio fue de \textbf{16.1} mil, con intervalo de confianza 95\% de 15.0 a 17.2 y 99\% de 14.7 a 17.6, lo que confirma estadísticamente que es el mes de menor actividad y por tanto el más adecuado para tomar vacaciones.
+  \item En \textbf{agosto} se alcanzó el pico máximo, con promedio de \textbf{21.4} mil, IC95\% entre 20.5 y 22.3 e IC99\% entre 20.1 y 22.6, reflejando que justifica concentrar inversiones en ese mes.
+  \item Los \textbf{miércoles} y \textbf{jueves} registraron los promedios diarios más altos (\textbf{21.6} y \textbf{21.9} mil): sus IC95\% (20.9–22.3 y 21.2–22.6) e IC99\% (20.7–22.5 y 21.0–22.8) superan la media semanal, por lo que conviene contratar más empleados esos días; en cambio los \textbf{domingos} (16.5 mil, IC95\% 15.7–17.2, IC99\% 15.5–17.4) presentan la menor demanda y permiten reducir personal.
+  \item Santa Ana promedió \textbf{19.2} mil al día frente a los \textbf{17.3} mil de La Floresta; sus IC95\% (18.5–20.0 vs.\ 16.6–18.0) e IC99\% (18.3–20.2 vs.\ 16.4–18.2) confirman al 95\% y al 99\% que la diferencia es significativa, demostrando que efectivamente Don Francisco tenía razón y Santa Ana vende más.
+\end{itemize}
+
+\section*{Código}
+El Notebook correspondiente a este trabajo se encuentra en el siguiente link. \newline \url{https://github.com/martinbrocca/CEIA-PEIA/blob/main/TP3/TP3.ipynb}
+
+\end{document}
